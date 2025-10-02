@@ -1,6 +1,11 @@
 ﻿#include <iostream>
 #include <bitset>
 
+/*Для пункта 1 число А (short) вводиться с клавиатуры, номер бита i тоже.
+Проверить правильность ввода i и определить по заданию. Все числа выводить в виде “5 = 00000101”.
+(будем рассматривать только первые 8 бит).
+Для первого сравнения в пункте 1, вытащить значение i бита в отдельную переменную.*/
+
 int main()
 {
 	setlocale(LC_ALL, "Russian");
@@ -10,23 +15,34 @@ int main()
 	std::cin >> a;
 	std::cout << "Введите номер бита i:" << std::endl;
 	std::cin >> i;
+	if (i > sizeof(int) * 8) {
+		std::cout << "такого бита не существует" << std::endl;
+	}
+	else {
+
+	}
 	if (i == 1) {
 		int x, y;
 		std::cout << "Введите несколько целых чисел" << std::endl;
 		std::cin >> x >> y;
 		if (x > y) {
 			std::cout << "максимальное число = " << x << std::endl;
-		} else {
+		}
+		else {
 			std::cout << "максимальное число = " << y << std::endl;
 		}
 		std::bitset <8> x1 = a;
+		std::bitset <8> x4 = (a & ~(1 << i));
 		std::cout << "число a до установления бита i в 0 = " << std::endl;
 		std::cout << x1.to_string() << std::endl;
-		std::cout << "число a после установления бита i в 0 = " <<std::endl;
-		std::cout << (a & ~(1 << i)) << std::endl;
+		std::cout << "число a после установления бита i в 0 = " << std::endl;
+		std::cout << x4.to_string() << std::endl;
 	}
 	else {
-		std::cout << "инвертированное число a = " << ~a << std::endl;
+		std::bitset <8> x3 = a;
+		std::bitset <8> x2 = (~a);
+		std::cout << "число a = " << x3.to_string() << std::endl;
+		std::cout << "инвертированное число a = " << x2.to_string() << std::endl;
 	}
 	int NumberOfMonth;
 	std::cout << "Введите номер месяца = " << std::endl;

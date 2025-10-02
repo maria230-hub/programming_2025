@@ -1,6 +1,11 @@
 ﻿#include <iostream>
 #include <cmath>
-
+/*
+очень
+большой
+комментарий
+:3
+*/
 int main() {
     setlocale(LC_ALL, "Russian");
     int spaceofint = sizeof(int) * 8;
