@@ -15,7 +15,7 @@ int main()
 	std::cin >> a;
 	std::cout << "Введите номер бита i:" << std::endl;
 	std::cin >> i;
-	if (i > sizeof(int) * 8) {
+	if (i > (sizeof(int) * 8 - 1)) {
 		std::cout << "такого бита не существует" << std::endl;
 	}
 	else {
@@ -32,17 +32,17 @@ int main()
 			std::cout << "максимальное число = " << y << std::endl;
 		}
 		std::bitset <8> x1 = a;
-		std::bitset <8> x4 = (a & ~(1 << i));
+		std::bitset <8> x2 = (a & ~(1 << i));
 		std::cout << "число a до установления бита i в 0 = " << std::endl;
 		std::cout << x1.to_string() << std::endl;
 		std::cout << "число a после установления бита i в 0 = " << std::endl;
-		std::cout << x4.to_string() << std::endl;
+		std::cout << x2.to_string() << std::endl;
 	}
 	else {
 		std::bitset <8> x3 = a;
-		std::bitset <8> x2 = (~a);
+		std::bitset <8> x4 = (~a);
 		std::cout << "число a = " << x3.to_string() << std::endl;
-		std::cout << "инвертированное число a = " << x2.to_string() << std::endl;
+		std::cout << "инвертированное число a = " << x4.to_string() << std::endl;
 	}
 	int NumberOfMonth;
 	std::cout << "Введите номер месяца = " << std::endl;
