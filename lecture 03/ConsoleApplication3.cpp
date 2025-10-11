@@ -15,13 +15,14 @@ int main()
 	std::cin >> a;
 	std::cout << "Введите номер бита i:" << std::endl;
 	std::cin >> i;
+	int bitsize = (1 & (a >> i));
 	if (i > (sizeof(int) * 8 - 1)) {
 		std::cout << "такого бита не существует" << std::endl;
 	}
 	else {
-
+		std::cout << "значение бита i = " << bitsize << std::endl;
 	}
-	if (i == 1) {
+	if (bitsize == 1) {
 		int x, y;
 		std::cout << "Введите несколько целых чисел" << std::endl;
 		std::cin >> x >> y;
