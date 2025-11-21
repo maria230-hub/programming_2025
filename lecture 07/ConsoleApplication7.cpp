@@ -42,44 +42,41 @@ int* findZeroColumns(int** matrix, int rows, int cols, int& zeroCount) {
     free(hasZero);
     return zeroColumns;
 }
+void removecolumns(int** matrix, int rows, int& cols, int* columnsremover, int removecount) {
+    if (removecount == 0 || removecount >= cols) return;
 
-int** removeColumns(int** matrix, int rows, int cols, int* columnsToRemove, int removeCount, int& newCols) {
-    if (removeCount == 0) {
-        newCols = cols;
-        return 0;
+    bool* keepcolumn = (bool*)calloc(cols, sizeof(bool));
+    for (int j = 0; j < cols; ++j) {
+        keepcolumn[j] = true;
     }
 
-    newCols = cols - removeCount;
-    int** newMatrix = (int**)malloc(rows * sizeof(int*));
-    if (!newMatrix) return 0;
+    for (int p = 0; p < removecount; ++p) {
+        if (columnsremover[p] < cols) {
+            keepcolumn[columnsremover[p]] = false;
+        }
+    }
 
     for (int i = 0; i < rows; ++i) {
-        newMatrix[i] = (int*)malloc(newCols * sizeof(int));
-        if (!newMatrix[i]) {
-            for (int p = 0; p < i; ++p) {
-                free(newMatrix[p]);
-            }
-            free(newMatrix);
-            return 0;
-        }
-
-        int newJ = 0;
+        int newj = 0;
         for (int j = 0; j < cols; ++j) {
-            bool shouldRemove = false;
-            for (int p = 0; p < removeCount; ++p) {
-                if (j == columnsToRemove[p]) {
-                    shouldRemove = true;
-                    break;
+            if (keepcolumn[j]) {
+                if (newj != j) {
+                    matrix[i][newj] = matrix[i][j];
                 }
-            }
-
-            if (!shouldRemove) {
-                newMatrix[i][newJ++] = matrix[i][j];
+                newj++;
             }
         }
     }
 
-    return newMatrix;
+    int newcols = cols - removecount;
+    for (int i = 0; i < rows; ++i) {
+        int* newrow = (int*)realloc(matrix[i], newcols * sizeof(int));
+        if (newrow) {
+            matrix[i] = newrow;
+        }
+    }
+    cools = newcols;
+    free(keepcolumn);
 }
 
 void printMatrix(int** matrix, int rows, int cols) {
@@ -108,13 +105,29 @@ int main() {
 
     int rows = 2;
     int cols = 2;
+    int A, B, C, D;
+
+    do {
+        cout << "Введите А (>=0);" << " ";
+        cin >> A;
+        if (A < 0) cout << "Ошибка" << endl;
+    } while (A > 0);
+    do {
+        cout << "Введите B (>=0);" << " ";
+        cin >> B;
+        if (B < 0) cout << "Ошибка" << endl;
+    } while (B > 0);
+
+    cout << "Введите С: " << " ";
+    cin >> C;
+    cout << "Введите D: " << " ";
+    cin >> D;
 
     int** matrix = (int**)malloc(rows * sizeof(int*));
     if (!matrix) {
-        cout << "Ошибка выделения памяти" << endl;
+        cout << "Ошибка" << endl;
         return 1;
     }
-
     for (int i = 0; i < rows; ++i) {
         matrix[i] = (int*)malloc(cols * sizeof(int));
         if (!matrix[i]) {
@@ -126,34 +139,14 @@ int main() {
             return 1;
         }
     }
-    cout << "Введите числа для матрицы 2x2:" << endl;
-    for (int i = 0; i < rows; ++i) {
-        for (int j = 0; j < cols; ++j) {
-            cout << "matrix[" << i << "][" << j << "]: ";
-            cin >> matrix[i][j];
-        }
-    }
 
-    printMatrix(matrix, 2, 2);
+    matrix[0][0] = A;
+    matrix[0][1] = B;
+    matrix[1][0] = C;
+    matrix[1][1] = D;
 
-    int A, B, C, D;
-
-    do {
-        cout << "Введите A (строки добавить снизу, >= 0): ";
-        cin >> A;
-        if (A < 0) cout << "Ошибка! A не может быть отрицательным." << endl;
-    } while (A < 0);
-
-    do {
-        cout << "Введите B (столбцы добавить справа, >= 0): ";
-        cin >> B;
-        if (B < 0) cout << "Ошибка! B не может быть отрицательным." << endl;
-    } while (B < 0);
-
-    cout << "Введите коэффициент C: ";
-    cin >> C;
-    cout << "Введите коэффициент D: ";
-    cin >> D;
+    cout << "Исходная матрица: " << endl;
+    printMatrix(matrix; rows; cols);
 
     if (B > 0) {
         int newCols = cols + B;
@@ -165,6 +158,7 @@ int main() {
                 return 1;
             }
             matrix[i] = newRow;
+
             for (int j = cols; j < newCols; ++j) {
                 matrix[i][j] = i * C + j * D;
             }
@@ -175,23 +169,20 @@ int main() {
 
     if (A > 0) {
         int newRows = rows + A;
-        int** newMatrix = (int**)realloc(matrix, newRows * sizeof(int*));
-        if (!newMatrix) {
-            cout << "Ошибка выделения памяти для строк" << endl;
-            freeMatrix(matrix, rows);
+
+        matrix = (int**)realloc(matrix, newrows * sizeof(int*));
+        if (!matrix) {
+            cout << "Ошибка выделения памяти для строк" << endl;;
             return 1;
         }
-        matrix = newMatrix;
 
         for (int i = rows; i < newRows; ++i) {
             matrix[i] = (int*)malloc(cols * sizeof(int));
             if (!matrix[i]) {
                 cout << "Ошибка выделения памяти для новых строк" << endl;
-                for (int j = rows; j < i; ++j) {
-                    free(matrix[j]);
-                }
-                matrix = (int**)realloc(matrix, rows * sizeof(int*));
-                freeMatrix(matrix, rows);
+                for (int j = rows; j < i; ++j) free(matrix[j]);
+                matrix = (int**)realloc(matrix; rows * sizeof(int*));
+                freeMatrix(matrix; rows);
                 return 1;
             }
 
@@ -200,14 +191,12 @@ int main() {
             }
         }
         rows = newRows;
+        cour << "После добавления " << A << "строк: " << endl;
         printMatrix(matrix, rows, cols);
     }
 
     int zeroCount = 0;
     int* zeroColumns = findZeroColumns(matrix, rows, cols, zeroCount);
-
-    int** finalMatrix = 0;
-    int finalCols = 0;
 
     if (zeroCount > 0 && zeroColumns) {
         cout << "Найдены нули в столбцах: ";
@@ -216,29 +205,21 @@ int main() {
         }
         cout << endl;
 
-        finalMatrix = removeColumns(matrix, rows, cols, zeroColumns, zeroCount, finalCols);
-
-        if (finalMatrix && finalCols > 0) {
-            printMatrix(finalMatrix, rows, finalCols);
-        }
+        removecolumns(matrix, rows, cols, zeroColumns, zeroCount);
+        cout << "После удаления столбцов с нулями: " << endl;
+        printMatrix(matrix, rows, cols);
 
         free(zeroColumns);
     }
     else {
         cout << "Столбцов с нулевыми элементами не найдено" << endl;
-        finalMatrix = matrix;
-        finalCols = cols;
     }
 
-    if (finalMatrix != matrix) {
-        freeMatrix(matrix, rows);
-    }
-    if (finalMatrix && finalMatrix != matrix) {
-        freeMatrix(finalMatrix, rows);
-    }
+    freeMatrix(matrix, rows);
+}
 
     //пункт второй
-    double a, b;
+   double a, b;
     cout << "Введите a = " << endl;
     cin >> a;
     cout << "Введите b = " << endl;
@@ -260,3 +241,4 @@ int main() {
 
     return 0;
 }
+    
