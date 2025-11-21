@@ -75,7 +75,7 @@ void removecolumns(int** matrix, int rows, int& cols, int* columnsremover, int r
             matrix[i] = newrow;
         }
     }
-    cools = newcols;
+    cols = newcols;
     free(keepcolumn);
 }
 
