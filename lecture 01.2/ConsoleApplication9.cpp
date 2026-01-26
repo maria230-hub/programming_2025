@@ -9,7 +9,6 @@ private:
     int course;
     int group;
     int variant;
-
 public:
     //конструктор по умолчанию
     Student() {
@@ -23,9 +22,24 @@ public:
 
     //конструктор полного заполнения
     Student(const std::string& n, const std::string& s, const std::string& d, int c, int g, int v) {
-        name = n;
-        surname = s;
-        direction = d;
+        if (n.empty()) {
+            name = "unknown";
+        }
+        else {
+            name = n;
+        }
+        if (s.empty()) {
+            surname = "unknown";
+        }
+        else {
+            surname = s;
+        }
+        if (d.empty()) {
+            direction = "unknown";
+        }
+        else {
+            direction = d;
+        }
         set_group(g);
         set_course(c);
         set_variant(v);
@@ -33,24 +47,12 @@ public:
 
     //конструктор копирования
     Student(const Student& other) {
-        if (this == &other) {
-            std::cout << "Self-copy attempt detected!" << std::endl;
-            // Инициализируем значениями по умолчанию
-            name = "Default";
-            surname = "Default";
-            direction = "Unknown";
-            course = 1;
-            group = 1;
-            variant = 1;
-        }
-        else {
-            name = other.name;
-            surname = other.surname;
-            direction = other.direction;
-            course = other.course;
-            group = other.group;
-            variant = other.variant;
-        }
+        name = other.name;
+        surname = other.surname;
+        direction = other.direction;
+        course = other.course;
+        group = other.group;
+        variant = other.variant;
     }
 
     //деструктор
@@ -151,7 +153,7 @@ int main() {
     Student student1;
     student1.inputfromkeyboard();
     student1.printInfo();
-    Student student2("Shane", "Hollander", "HZ", 5, 10, -1);
+    Student student2("", "Hollander", "HZ", 5, 10, -1);
     std::cout << "Name:" << student2.get_name() << std::endl;
     std::cout << "Surname:" << student2.get_surname() << std::endl;
     std::cout << "Direction:" << student2.get_direction() << std::endl;
