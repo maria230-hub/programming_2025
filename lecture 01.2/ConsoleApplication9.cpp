@@ -22,37 +22,28 @@ public:
 
     //конструктор полного заполнения
     Student(const std::string& n, const std::string& s, const std::string& d, int c, int g, int v) {
-        if (n.empty()) {
-            name = "unknown";
-        }
-        else {
-            name = n;
-        }
-        if (s.empty()) {
-            surname = "unknown";
-        }
-        else {
-            surname = s;
-        }
-        if (d.empty()) {
-            direction = "unknown";
-        }
-        else {
-            direction = d;
-        }
-        set_group(g);
+        name = n;
+        surname = s;
+        direction = d;
         set_course(c);
+        set_group(g);
         set_variant(v);
     }
 
     //конструктор копирования
     Student(const Student& other) {
-        name = other.name;
-        surname = other.surname;
-        direction = other.direction;
-        course = other.course;
-        group = other.group;
-        variant = other.variant;
+        if (other != nullptr)
+        {
+            name = other.name;
+            surname = other.surname;
+            direction = other.direction;
+            course = other.course;
+            group = other.group;
+            variant = other.variant;
+        }
+        else {
+            std::cout << "error" << std::endl;
+        }
     }
 
     //деструктор
